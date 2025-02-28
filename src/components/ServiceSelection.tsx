@@ -97,7 +97,7 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
                   </div>
                 )}
                 
-                <div className="flex p-4 items-center space-x-4">
+                <div className="flex p-4 items-start space-x-4">
                   {/* Service image */}
                   <div className="relative flex-shrink-0">
                     {service.imageUrl ? (
@@ -143,7 +143,7 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
                   </div>
                   
                   {/* Price tag - Smoother display */}
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 self-start">
                     <div className="bg-gradient-to-r from-custom-primary/10 to-custom-secondary/20 text-custom-secondary font-semibold px-4 py-2 rounded-lg shadow-sm transition-all group-hover:shadow group-hover:scale-105">
                       ${service.price}
                     </div>
