@@ -36,6 +36,7 @@ export interface Appointment {
   customerPhone: string;
   status?: 'booked' | 'confirmed' | 'cancelled';
   createdAt?: string;
+  userId?: string; // Added for user association
 }
 
 export interface BookingState {
@@ -49,4 +50,13 @@ export interface BookingState {
     email: string;
     phone: string;
   };
+}
+
+export interface User {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  username?: string;
+  imageUrl?: string;
 }
