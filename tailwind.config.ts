@@ -76,6 +76,10 @@ export default {
 					'900': '#5c3373',
 					'950': '#3e1f50',
 				},
+				custom: {
+					'primary': '#2c0f44',
+					'secondary': '#EE0E42'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

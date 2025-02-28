@@ -81,6 +81,12 @@
     @apply max-w-md mx-auto min-h-screen bg-background;
   }
 
+  /* Apply custom button styling */
+  button[type="submit"],
+  .btn-primary {
+    @apply bg-custom-secondary text-white hover:bg-custom-secondary/90;
+  }
+
   .shimmer {
     background: linear-gradient(
       90deg,
