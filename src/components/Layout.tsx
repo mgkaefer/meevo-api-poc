@@ -28,8 +28,8 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="app-container p-4 pb-8">
-        <header className="mb-8 pt-2 bg-custom-primary rounded-xl p-4 shadow-md">
+      <div className="app-container pb-8">
+        <header className="mb-8 pt-2 bg-custom-primary xl p-4 shadow-md">
           <div className="flex justify-between items-center mb-4">
             {/* Logo on the left */}
             <div className="flex items-center">

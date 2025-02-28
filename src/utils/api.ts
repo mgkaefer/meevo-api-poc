@@ -1,23 +1,25 @@
-
 import { Service, Professional, TimeSlot, Appointment } from "@/types";
+import axios from "axios";
 
 // Mock data
 const services: Service[] = [
   {
     id: "s1",
     name: "Full Leg Wax",
-    description: "Complete waxing treatment for both legs, from ankle to upper thigh.",
+    description:
+      "Complete waxing treatment for both legs, from ankle to upper thigh.",
     price: 65,
     duration: 45,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s2",
     name: "Brazilian Wax",
-    description: "Complete hair removal from the entire intimate area, front to back.",
+    description:
+      "Complete hair removal from the entire intimate area, front to back.",
     price: 75,
     duration: 30,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s3",
@@ -25,7 +27,7 @@ const services: Service[] = [
     description: "Quick and effective hair removal from the underarm area.",
     price: 25,
     duration: 15,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s4",
@@ -33,7 +35,7 @@ const services: Service[] = [
     description: "Sculpt and define your eyebrows with precise waxing.",
     price: 20,
     duration: 15,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s5",
@@ -41,7 +43,7 @@ const services: Service[] = [
     description: "Complete hair removal from fingers to shoulders.",
     price: 45,
     duration: 30,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s6",
@@ -49,7 +51,7 @@ const services: Service[] = [
     description: "Hair removal along the bikini line for a clean appearance.",
     price: 35,
     duration: 20,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s7",
@@ -57,7 +59,7 @@ const services: Service[] = [
     description: "Complete hair removal treatment for the entire body.",
     price: 180,
     duration: 120,
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/placeholder.svg",
   },
   {
     id: "s8",
@@ -65,8 +67,8 @@ const services: Service[] = [
     description: "Hair removal treatment for the back and shoulder areas.",
     price: 50,
     duration: 30,
-    imageUrl: "/placeholder.svg"
-  }
+    imageUrl: "/placeholder.svg",
+  },
 ];
 
 const professionals: Professional[] = [
@@ -76,7 +78,7 @@ const professionals: Professional[] = [
     title: "Senior Wax Specialist",
     imageUrl: "/placeholder.svg",
     bio: "With 8 years of experience, Emma specializes in Brazilian and full body waxing with a gentle touch.",
-    serviceIds: ["s1", "s2", "s3", "s5", "s6", "s7"]
+    serviceIds: ["s1", "s2", "s3", "s5", "s6", "s7"],
   },
   {
     id: "p2",
@@ -84,7 +86,7 @@ const professionals: Professional[] = [
     title: "Wax Technician",
     imageUrl: "/placeholder.svg",
     bio: "Michael is known for his quick and painless technique, specializing in men's waxing services.",
-    serviceIds: ["s1", "s3", "s5", "s8"]
+    serviceIds: ["s1", "s3", "s5", "s8"],
   },
   {
     id: "p3",
@@ -92,7 +94,7 @@ const professionals: Professional[] = [
     title: "Esthetician",
     imageUrl: "/placeholder.svg",
     bio: "Sofia is our facial waxing expert, with special expertise in eyebrow shaping and facial hair removal.",
-    serviceIds: ["s3", "s4", "s6"]
+    serviceIds: ["s3", "s4", "s6"],
   },
   {
     id: "p4",
@@ -100,25 +102,47 @@ const professionals: Professional[] = [
     title: "Advanced Wax Specialist",
     imageUrl: "/placeholder.svg",
     bio: "David combines waxing with skincare knowledge for an exceptional experience. He specializes in full body treatments.",
-    serviceIds: ["s1", "s2", "s5", "s7", "s8"]
-  }
+    serviceIds: ["s1", "s2", "s5", "s7", "s8"],
+  },
 ];
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const tenantId = import.meta.env.VITE_TENANT_ID;
+const locationId = import.meta.env.VITE_LOCATION_ID;
+
+console.log("asdasdasdasdasdasdsa");
+console.log(import.meta.env);
+
 // API functions
-export const getServices = async (): Promise<Service[]> => {
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(services);
-    }, 500);
+export const getServices = async (token: string): Promise<Service[]> => {
+  const response = await axios.get(`${baseUrl}/v1/book/appointmentCategories`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+    params: {
+      TenantId: tenantId,
+      LocationId: locationId,
+    },
   });
+
+  return response.data.Data.map((item: any) => ({
+    id: item.AppointmentCategoryId,
+    name: item.DisplayName,
+    description: "",
+    price: 0,
+    duration: 0,
+    imageUrl: "/placeholder.svg",
+  }));
 };
 
-export const getProfessionalsByService = async (serviceId: string): Promise<Professional[]> => {
+export const getProfessionalsByService = async (
+  serviceId: string
+): Promise<Professional[]> => {
   // Simulate API call
   return new Promise((resolve) => {
     setTimeout(() => {
-      const filteredProfessionals = professionals.filter(p => 
+      const filteredProfessionals = professionals.filter((p) =>
         p.serviceIds.includes(serviceId)
       );
       resolve(filteredProfessionals);
@@ -127,65 +151,65 @@ export const getProfessionalsByService = async (serviceId: string): Promise<Prof
 };
 
 export const getAvailableTimeSlots = async (
+  token: string,
   professionalId: string,
   date: string,
   serviceId: string
 ): Promise<TimeSlot[]> => {
-  // Find the service to get its duration
-  const service = services.find(s => s.id === serviceId);
-  if (!service) {
-    return Promise.reject(new Error("Service not found"));
-  }
-
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Start times between 9 AM and 5 PM with 30 minute intervals
-      const baseDate = new Date(date);
-      baseDate.setHours(9, 0, 0, 0);
-      
-      const slots: TimeSlot[] = [];
-      
-      // Generate time slots
-      for (let i = 0; i < 16; i++) {
-        const startTime = new Date(baseDate);
-        startTime.setMinutes(startTime.getMinutes() + i * 30);
-        
-        const endTime = new Date(startTime);
-        endTime.setMinutes(endTime.getMinutes() + service.duration);
-        
-        // Don't add slots that would end after business hours (6 PM)
-        if (endTime.getHours() >= 18) continue;
-
-        // Randomly determine availability (70% chance of being available)
-        const available = Math.random() > 0.3;
-        
-        slots.push({
-          id: `slot-${i}`,
-          startTime: startTime.toISOString(),
-          endTime: endTime.toISOString(),
-          available
-        });
-      }
-      
-      resolve(slots);
-    }, 700);
+  const response = await axios.get(`${baseUrl}/v1/book/availability`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+    params: {
+      TenantId: tenantId,
+      LocationId: locationId,
+      EmployeeId: professionalId,
+      ServiceId: serviceId,
+      Date: date,
+    },
   });
+
+  return response.data.Data.map((slot: any) => ({
+    id: slot.AvailabilityId,
+    startTime: slot.StartTime,
+    endTime: slot.EndTime,
+    available: slot.IsAvailable,
+  }));
 };
 
-export const createAppointment = async (appointment: Appointment): Promise<Appointment> => {
-  console.log('Creating appointment:', appointment);
-  
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Simulate a successful booking
-      resolve({
-        ...appointment,
-        id: `app-${Date.now()}`,
-        status: 'booked',
-        createdAt: new Date().toISOString()
-      });
-    }, 1000);
-  });
+export const createAppointment = async (
+  token: string,
+  appointment: Appointment
+): Promise<Appointment> => {
+  const response = await axios.post(
+    `${baseUrl}/v1/book/appointments`,
+    {
+      TenantId: tenantId,
+      LocationId: locationId,
+      ServiceId: appointment.serviceId,
+      EmployeeId: appointment.professionalId,
+      Date: appointment.date,
+      StartTime: appointment.startTime,
+      EndTime: appointment.endTime,
+      Customer: {
+        Name: appointment.customerName,
+        Email: appointment.customerEmail,
+        Phone: appointment.customerPhone,
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  );
+
+  return {
+    ...appointment,
+    id: response.data.Data.AppointmentId,
+    status: "booked",
+    createdAt: new Date().toISOString(),
+  };
 };
