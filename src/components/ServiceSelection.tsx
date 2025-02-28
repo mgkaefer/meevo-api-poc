@@ -42,14 +42,6 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
     }, 300);
   };
 
-  // Function to determine popularity badge (demo purposes)
-  const getPopularityBadge = (serviceId: string) => {
-    const id = parseInt(serviceId, 10) || 0;
-    if (id % 3 === 0) return { type: "popular", label: "Popular" };
-    if (id % 4 === 0) return { type: "new", label: "New" };
-    return null;
-  };
-
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
@@ -82,7 +74,6 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
           ))
         ) : filteredServices.length > 0 ? (
           filteredServices.map((service, index) => {
-            const popularityBadge = getPopularityBadge(service.id);
             const isSelected = selectedIndex === index;
             
             return (
@@ -103,19 +94,6 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
                     <div className="bg-white rounded-full p-1 shadow-md">
                       <Check className="text-custom-secondary h-5 w-5 animate-scale-in" />
                     </div>
-                  </div>
-                )}
-                
-                {/* Popularity badge */}
-                {popularityBadge && (
-                  <div 
-                    className={cn(
-                      "absolute top-2 right-2 z-20 px-2 py-1 rounded-full text-xs font-medium",
-                      "shadow-sm animate-fade-in",
-                      popularityBadge.type === "popular" ? "bg-custom-secondary text-white" : "bg-yellow-400 text-yellow-800"
-                    )}
-                  >
-                    {popularityBadge.label}
                   </div>
                 )}
                 
@@ -164,14 +142,11 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
                     </div>
                   </div>
                   
-                  {/* Price tag */}
-                  <div className="flex-shrink-0 flex flex-col items-end">
-                    <div className="bg-custom-primary/5 text-custom-secondary font-semibold px-3 py-1 rounded-lg">
+                  {/* Price tag - Smoother display */}
+                  <div className="flex-shrink-0">
+                    <div className="bg-gradient-to-r from-custom-primary/10 to-custom-secondary/20 text-custom-secondary font-semibold px-4 py-2 rounded-lg shadow-sm transition-all group-hover:shadow group-hover:scale-105">
                       ${service.price}
                     </div>
-                    <button className="mt-2 text-xs bg-custom-secondary/90 hover:bg-custom-secondary text-white px-3 py-1 rounded-lg transition-colors">
-                      Select
-                    </button>
                   </div>
                 </div>
               </div>
