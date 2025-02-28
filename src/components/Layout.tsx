@@ -12,20 +12,20 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
     <div className="min-h-screen bg-background">
       <div className="app-container p-4 pb-8">
-        <header className="mb-8 pt-2">
+        <header className="mb-8 pt-2 bg-wax-900 rounded-xl p-4 shadow-md">
           <div className="flex justify-between items-center mb-4">
             {/* Logo on the left */}
             <div className="flex items-center">
               <h1 className="text-3xl font-medium">
-                <span className="text-wax-800">Glow</span>
-                <span className="text-wax-500">Wax</span>
+                <span className="text-white">Glow</span>
+                <span className="text-wax-300">Wax</span>
               </h1>
             </div>
             
             {/* User name and icon on the right */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-wax-700 hidden sm:inline">Jane Doe</span>
-              <div className="h-8 w-8 rounded-full bg-wax-100 flex items-center justify-center text-wax-500">
+              <span className="text-sm font-medium text-white hidden sm:inline">Jane Doe</span>
+              <div className="h-8 w-8 rounded-full bg-wax-800 flex items-center justify-center text-white">
                 <User size={18} />
               </div>
             </div>
@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
           
           <div className="animate-fade-in">
             <div className="text-center mb-2">
-              <div className="inline-block bg-wax-100 text-wax-700 text-xs px-3 py-1 rounded-full font-medium">
+              <div className="inline-block bg-wax-800 text-white text-xs px-3 py-1 rounded-full font-medium">
                 Premium Waxing Services
               </div>
             </div>
