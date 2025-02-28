@@ -70,9 +70,9 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
               onClick={() => onSelect(service)}
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <div className="flex flex-col items-center">
-                {/* Service image, centered */}
-                <div className="mb-2 flex justify-center">
+              <div className="flex flex-row items-center space-x-4">
+                {/* Service image */}
+                <div className="flex-shrink-0">
                   {service.imageUrl ? (
                     <img 
                       src={service.imageUrl} 
@@ -89,16 +89,15 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
                 </div>
                 
                 {/* Service details */}
-                <div className="text-center mb-2">
+                <div className="flex-grow text-center">
                   <h3 className="font-medium">{service.name}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {service.description}
                   </p>
-                </div>
-                
-                <div className="text-center">
-                  <p className="font-semibold">${service.price}</p>
-                  <p className="text-xs text-muted-foreground">{service.duration} min</p>
+                  <div className="mt-1">
+                    <p className="font-semibold">${service.price}</p>
+                    <p className="text-xs text-muted-foreground">{service.duration} min</p>
+                  </div>
                 </div>
               </div>
             </div>
