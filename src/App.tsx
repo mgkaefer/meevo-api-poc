@@ -1,15 +1,16 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import { getToken } from "./utils/apiClient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
@@ -26,17 +27,39 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const initApp = async () => {
     try {
+      setIsLoading(true);
       const tokenData = await getToken();
-      console.log("Token Data:", tokenData);
+      if (tokenData && tokenData.access_token) {
+        setToken(tokenData.access_token);
+        // Store token in localStorage for persistence
+        localStorage.setItem("authToken", tokenData.access_token);
+        console.log("Token retrieved successfully");
+      } else {
+        setError("Failed to retrieve valid token");
+      }
     } catch (error) {
       console.error("Initialization error:", error);
+      setError("Failed to initialize the application");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    initApp();
+    // Check if token exists in localStorage
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      setToken(storedToken);
+      setIsLoading(false);
+    } else {
+      initApp();
+    }
   }, []);
 
   return (
@@ -55,7 +78,7 @@ const App = () => {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Index />
+                  <Index token={token} isLoading={isLoading} error={error} />
                 </ProtectedRoute>
               }
             />

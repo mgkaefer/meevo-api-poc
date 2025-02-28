@@ -7,12 +7,31 @@ import DateTimeSelection from "@/components/DateTimeSelection";
 import Checkout from "@/components/Checkout";
 import AppointmentConfirmation from "@/components/AppointmentConfirmation";
 import { BookingState, Service, Professional, TimeSlot, Appointment } from "@/types";
+import { useToast } from "@/hooks/use-toast";
 
-const Index = () => {
+interface IndexProps {
+  token: string | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+const Index = ({ token, isLoading, error }: IndexProps) => {
   const [bookingState, setBookingState] = useState<BookingState>({
     step: "service"
   });
   const [appointment, setAppointment] = useState<Appointment | null>(null);
+  const { toast } = useToast();
+
+  // Handle token loading and errors
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
 
   // Add smooth transition between steps with automatic scroll to top
   useEffect(() => {
@@ -73,9 +92,33 @@ const Index = () => {
   };
 
   const renderStep = () => {
+    // Show loading state if token is loading
+    if (isLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+          <p className="text-lg">Loading application...</p>
+        </div>
+      );
+    }
+
+    // Show error state if there's an error or no token
+    if (error || !token) {
+      return (
+        <div className="flex flex-col items-center justify-center p-8">
+          <div className="text-red-500 text-xl mb-4">
+            Unable to initialize the application
+          </div>
+          <p className="text-muted-foreground">
+            {error || "Authentication token is missing"}
+          </p>
+        </div>
+      );
+    }
+
     switch (bookingState.step) {
       case "service":
-        return <ServiceSelection onSelect={handleSelectService} />;
+        return <ServiceSelection onSelect={handleSelectService} token={token} />;
       
       case "professional":
         if (!bookingState.selectedService) return null;
@@ -84,6 +127,7 @@ const Index = () => {
             service={bookingState.selectedService}
             onSelect={handleSelectProfessional}
             onBack={handleBackToServices}
+            token={token}
           />
         );
       
@@ -95,6 +139,7 @@ const Index = () => {
             professional={bookingState.selectedProfessional}
             onSelect={handleSelectDateTime}
             onBack={handleBackToProfessionals}
+            token={token}
           />
         );
       
@@ -114,6 +159,7 @@ const Index = () => {
             timeSlot={bookingState.selectedTimeSlot}
             onComplete={handleCompleteBooking}
             onBack={handleBackToDateTime}
+            token={token}
           />
         );
       
