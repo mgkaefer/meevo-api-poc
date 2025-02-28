@@ -1,4 +1,3 @@
-
 import React from "react";
 import { cn } from "@/lib/utils";
 import { User, LogOut } from "lucide-react";
@@ -30,33 +29,33 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
     <div className="min-h-screen bg-background">
       <div className="app-container pb-8">
         <header className="mb-8 pt-2 bg-custom-primary xl p-4 shadow-md">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center py-2">
             {/* Logo on the left */}
             <div className="flex items-center">
               <h1 className="text-3xl font-medium">
-                <span className="text-white">Glow</span>
-                <span className="text-custom-secondary">Wax</span>
+                {/* <span className="text-white">Glow</span>
+                <span className="text-custom-secondary">Wax</span> */}
               </h1>
             </div>
-            
+
             {/* User info and actions on the right */}
             <div className="flex items-center gap-2">
               <SignedIn>
                 <span className="text-sm font-medium text-white hidden sm:inline">
-                  {user?.firstName || user?.username || 'User'}
+                  {user?.firstName || user?.username || "User"}
                 </span>
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-white">
                   {user?.imageUrl ? (
-                    <img 
-                      src={user.imageUrl} 
-                      alt="Profile" 
+                    <img
+                      src={user.imageUrl}
+                      alt="Profile"
                       className="h-8 w-8 rounded-full object-cover"
                     />
                   ) : (
                     <User size={18} />
                   )}
                 </div>
-                <button 
+                <button
                   onClick={handleSignOut}
                   className="text-white hover:text-custom-secondary transition-colors ml-2"
                 >
@@ -64,8 +63,8 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
                 </button>
               </SignedIn>
               <SignedOut>
-                <Link 
-                  to="/sign-in" 
+                <Link
+                  to="/sign-in"
                   className="text-white hover:text-custom-secondary transition-colors"
                 >
                   Sign In
@@ -74,9 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
             </div>
           </div>
         </header>
-        <main className={cn("rounded-xl px-2", className)}>
-          {children}
-        </main>
+        <main className={cn("rounded-xl px-2", className)}>{children}</main>
         <footer className="text-center text-xs text-muted-foreground mt-12 pb-6">
           <p>© 2023 GlowWax. All rights reserved.</p>
         </footer>
