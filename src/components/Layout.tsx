@@ -30,14 +30,6 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
               </div>
             </div>
           </div>
-          
-          <div className="animate-fade-in">
-            <div className="text-center mb-2">
-              <div className="inline-block bg-wax-800 text-white text-xs px-3 py-1 rounded-full font-medium">
-                Premium Waxing Services
-              </div>
-            </div>
-          </div>
         </header>
         <main className={cn("rounded-xl px-2", className)}>
           {children}
