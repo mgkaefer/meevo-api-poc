@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { format, addDays, isSameDay } from "date-fns";
 import { Service, Professional, TimeSlot } from "@/types";
@@ -10,13 +9,15 @@ interface DateTimeSelectionProps {
   professional: Professional;
   onSelect: (date: string, timeSlot: TimeSlot) => void;
   onBack: () => void;
+  token: string;
 }
 
 const DateTimeSelection: React.FC<DateTimeSelectionProps> = ({
   service,
   professional,
   onSelect,
-  onBack
+  onBack,
+  token
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
@@ -31,6 +32,7 @@ const DateTimeSelection: React.FC<DateTimeSelectionProps> = ({
       try {
         const dateString = selectedDate.toISOString().split('T')[0];
         const slots = await getAvailableTimeSlots(
+          token,
           professional.id,
           dateString,
           service.id
@@ -44,7 +46,7 @@ const DateTimeSelection: React.FC<DateTimeSelectionProps> = ({
     };
 
     fetchTimeSlots();
-  }, [selectedDate, professional.id, service.id]);
+  }, [selectedDate, professional.id, service.id, token]);
 
   const formatTimeSlot = (timeString: string) => {
     const date = new Date(timeString);

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Service } from "@/types";
 import { getServices } from "@/utils/api";
@@ -7,9 +6,10 @@ import { Clock, Star, Users, Search, Check } from "lucide-react";
 
 interface ServiceSelectionProps {
   onSelect: (service: Service) => void;
+  token: string;
 }
 
-const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
+const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect, token }) => {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +18,7 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const data = await getServices();
+        const data = await getServices(token);
         setServices(data);
       } catch (error) {
         console.error("Failed to fetch services:", error);
@@ -28,7 +28,7 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ onSelect }) => {
     };
 
     fetchServices();
-  }, []);
+  }, [token]);
 
   const filteredServices = services.filter(service =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())

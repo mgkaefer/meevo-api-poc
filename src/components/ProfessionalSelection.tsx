@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Professional, Service } from "@/types";
 import { getProfessionalsByService } from "@/utils/api";
@@ -8,12 +7,14 @@ interface ProfessionalSelectionProps {
   service: Service;
   onSelect: (professional: Professional) => void;
   onBack: () => void;
+  token: string;
 }
 
 const ProfessionalSelection: React.FC<ProfessionalSelectionProps> = ({
   service,
   onSelect,
-  onBack
+  onBack,
+  token
 }) => {
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const ProfessionalSelection: React.FC<ProfessionalSelectionProps> = ({
   useEffect(() => {
     const fetchProfessionals = async () => {
       try {
-        const data = await getProfessionalsByService(service.id);
+        const data = await getProfessionalsByService(service.id, token);
         setProfessionals(data);
       } catch (error) {
         console.error("Failed to fetch professionals:", error);
@@ -31,7 +32,7 @@ const ProfessionalSelection: React.FC<ProfessionalSelectionProps> = ({
     };
 
     fetchProfessionals();
-  }, [service.id]);
+  }, [service.id, token]);
 
   return (
     <div className="animate-fade-in">

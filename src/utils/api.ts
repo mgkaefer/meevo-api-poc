@@ -1,3 +1,4 @@
+
 import { Service, Professional, TimeSlot, Appointment } from "@/types";
 import axios from "axios";
 
@@ -110,11 +111,17 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const tenantId = import.meta.env.VITE_TENANT_ID;
 const locationId = import.meta.env.VITE_LOCATION_ID;
 
-console.log("asdasdasdasdasdasdsa");
-console.log(import.meta.env);
-
 // API functions
 export const getServices = async (token: string): Promise<Service[]> => {
+  // For now return the mock data until we implement the API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(services);
+    }, 500);
+  });
+  
+  // Actual API implementation - commented out until API is ready
+  /*
   const response = await axios.get(`${baseUrl}/v1/book/appointmentCategories`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -134,10 +141,12 @@ export const getServices = async (token: string): Promise<Service[]> => {
     duration: 0,
     imageUrl: "/placeholder.svg",
   }));
+  */
 };
 
 export const getProfessionalsByService = async (
-  serviceId: string
+  serviceId: string,
+  token: string
 ): Promise<Professional[]> => {
   // Simulate API call
   return new Promise((resolve) => {
@@ -156,6 +165,34 @@ export const getAvailableTimeSlots = async (
   date: string,
   serviceId: string
 ): Promise<TimeSlot[]> => {
+  // Mock implementation - simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Generate 8 random time slots starting from 9 AM
+      const baseTime = new Date(`${date}T09:00:00`);
+      const slots: TimeSlot[] = [];
+      
+      for (let i = 0; i < 8; i++) {
+        const startTime = new Date(baseTime);
+        startTime.setMinutes(startTime.getMinutes() + i * 60);
+        
+        const endTime = new Date(startTime);
+        endTime.setMinutes(endTime.getMinutes() + 45);
+        
+        slots.push({
+          id: `slot-${i}`,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          available: Math.random() > 0.3, // 70% chance of being available
+        });
+      }
+      
+      resolve(slots);
+    }, 500);
+  });
+  
+  // Actual API implementation - commented out until API is ready
+  /*
   const response = await axios.get(`${baseUrl}/v1/book/availability`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -176,12 +213,27 @@ export const getAvailableTimeSlots = async (
     endTime: slot.EndTime,
     available: slot.IsAvailable,
   }));
+  */
 };
 
 export const createAppointment = async (
   token: string,
   appointment: Appointment
 ): Promise<Appointment> => {
+  // Mock implementation - simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        ...appointment,
+        id: `appointment-${Date.now()}`,
+        status: "booked",
+        createdAt: new Date().toISOString(),
+      });
+    }, 1000);
+  });
+  
+  // Actual API implementation - commented out until API is ready
+  /*
   const response = await axios.post(
     `${baseUrl}/v1/book/appointments`,
     {
@@ -212,4 +264,5 @@ export const createAppointment = async (
     status: "booked",
     createdAt: new Date().toISOString(),
   };
+  */
 };

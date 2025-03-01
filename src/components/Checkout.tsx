@@ -13,6 +13,7 @@ interface CheckoutProps {
   timeSlot: TimeSlot;
   onComplete: (appointment: Appointment) => void;
   onBack: () => void;
+  token: string;
 }
 
 const Checkout: React.FC<CheckoutProps> = ({
@@ -21,7 +22,8 @@ const Checkout: React.FC<CheckoutProps> = ({
   date,
   timeSlot,
   onComplete,
-  onBack
+  onBack,
+  token
 }) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -89,7 +91,7 @@ const Checkout: React.FC<CheckoutProps> = ({
         customerPhone: formData.phone
       };
       
-      const result = await createAppointment(appointment);
+      const result = await createAppointment(token, appointment);
       
       toast({
         title: "Appointment Booked",
